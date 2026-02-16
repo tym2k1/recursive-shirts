@@ -1,0 +1,4 @@
+<svg
+xmlns="http://www.w3.org/2000/svg"
+font-family="monospace" width="63"
+height="60" font-size="3"><text x="0" y="3" >use std::fs::write;fn main(){write</text><text x="0" y="8" >("shirt_print.svg",format!(r#"&lt;svg</text><text x="0" y="13" >xmlns="http://www.w3.org/2000/svg"</text><text x="0" y="18" >font-family="monospace" width="63"</text><text x="0" y="23" >height="60" font-size="3"&gt;{}&lt;/svg&gt;</text><text x="0" y="28" >"#,include_str!("main.rs").lines()</text><text x="0" y="33" >.enumerate().map(|(yi,xi)|format!(</text><text x="0" y="38" >r#"&lt;text x="0" y="{}" &gt;{}&lt;/text&gt;"#</text><text x="0" y="43" >, 3+yi*5, xi.replace("&amp;", "&amp;amp;")</text><text x="0" y="48" >.replace("&lt;", "&amp;lt;").replace("&gt;",</text><text x="0" y="53" >"&amp;gt;"))).collect::&lt;String&gt;())).ok</text><text x="0" y="58" >();} // Made by &lt;3&lt; with love xoxo</text></svg>

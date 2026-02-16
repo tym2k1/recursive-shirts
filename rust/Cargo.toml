@@ -1,0 +1,10 @@
+[package]
+name = "rust_recursive_shirt"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[[bin]]
+name = "square_uncolor"
+path = "src/square_uncolor/main.rs"
