@@ -17,3 +17,12 @@ cd target/release
 # To generate the `shirt_print.svg` one needs to execute the compiled binary
 ./square_uncolor
 ```
+
+# Brainfuck
+
+```sh
+# Compile the brainfuck interpreter
+gcc bf.c -o bf
+# Generate the shirt_print.svg
+./bf shirt.bf < shirt.bf | tee shirt_print.svg
+```
