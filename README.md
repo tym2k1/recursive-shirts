@@ -30,3 +30,7 @@ gcc bf.c -o bf
     > >(tee shirt_print.svg) \
     2> >(cat >&2)
 ```
+
+# Credit
+
+Utilized [_Print value of cell x as number for ANY sized cell_ from esolangs.org](https://esolangs.org/wiki/Brainfuck_algorithms#Print_value_of_cell_x_as_number_for_ANY_sized_cell_\(eg_8bit,_100000bit_etc)
