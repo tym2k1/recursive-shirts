@@ -25,4 +25,8 @@ cd target/release
 gcc bf.c -o bf
 # Generate the shirt_print.svg
 ./bf shirt.bf < shirt.bf | tee shirt_print.svg
+# To print the end state of N memory tape cells use
+./bf shirt.bf -d N < shirt.bf \
+    > >(tee shirt_print.svg) \
+    2> >(cat >&2)
 ```

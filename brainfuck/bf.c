@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define TAPE 30000
 #define PROG 100000
@@ -12,7 +13,27 @@ int main(int argc, char **argv) {
     int pc = 0, len = 0, sp = 0;
     int ch;
 
-    FILE *f = argc > 1 ? fopen(argv[1], "r") : stdin;
+    int dump = 0;
+    char *filename = NULL;
+
+    /* parse args */
+    for (int i = 1; i < argc; i++) {
+        if (!strcmp(argv[i], "-d")) {
+            if (i + 1 >= argc) {
+                fprintf(stderr, "-d requires a number\n");
+                return 1;
+            }
+            dump = atoi(argv[++i]);
+            if (dump < 0 || dump > TAPE) {
+                fprintf(stderr, "invalid dump size\n");
+                return 1;
+            }
+        } else {
+            filename = argv[i];
+        }
+    }
+
+    FILE *f = filename ? fopen(filename, "r") : stdin;
     if (!f) return 1;
 
     /* read program */
@@ -50,5 +71,17 @@ int main(int argc, char **argv) {
             case ']': if (*p) pc = jump[pc]; break;
         }
         pc++;
+    }
+    /* debug dump */
+    if (dump > 0) {
+        fprintf(stderr, "\n\n--- tape dump (%d cells) ---\n", dump);
+        for (int i = 0; i < dump; i++) {
+            if (i == p - tape)
+                fprintf(stderr, "[%3d] ", tape[i]);  // mark pointer
+            else
+                fprintf(stderr, " %3d  ", tape[i]);
+            if ((i + 1) % 16 == 0) fprintf(stderr, "\n");
+        }
+        fprintf(stderr, "\nptr = %ld\n", p - tape);
     }
 }
