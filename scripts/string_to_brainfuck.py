@@ -101,7 +101,6 @@ def autotune(input_string: str):
     return best
 
 def main():
-    clean = False
     args = sys.argv[1:]
 
     input_string = args[0]
