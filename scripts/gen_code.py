@@ -49,8 +49,41 @@ def main():
 
     printing_logic = ",[.,]"
 
-    move_right = len(print_cells_state) - print_ptr
-    printing_pointer_alignment = ">" * move_right + printing_logic + "<" * move_right if move_right > 0 else printing_logic
+
+    if print_cells_state[print_ptr] == 0:
+        printing_pointer_alignment = printing_logic
+    else:
+        # Find nearest zero cell
+        best_dist = None
+
+        for i, val in enumerate(print_cells_state):
+            if val == 0:
+                dist = i - print_ptr
+                if best_dist is None or abs(dist) < abs(best_dist):
+                    best_dist = dist
+
+        # Also consider virtual zero cells outside current bounds
+        # Left outside → index -1
+        left_outside_dist = -1 - print_ptr
+        if best_dist is None or abs(left_outside_dist) < abs(best_dist):
+            best_dist = left_outside_dist
+
+        # Right outside → index len(print_cells_state)
+        right_outside_dist = len(print_cells_state) - print_ptr
+        if abs(right_outside_dist) < abs(best_dist):
+            best_dist = right_outside_dist
+
+        # Generate movement
+        if best_dist > 0:
+            move = ">" * best_dist
+        elif best_dist < 0:
+            move = "<" * (-best_dist)
+        else:
+            move = ""
+
+        printing_pointer_alignment = move + printing_logic + (
+            "<" * best_dist if best_dist > 0 else ">" * (-best_dist)
+        )
 
     # Insert printing_pointer_alignment after char_count_header dots
     dot_count = 0
