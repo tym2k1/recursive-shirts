@@ -51,6 +51,8 @@ def main():
     move_right = len(header_cells_state) - header_ptr
     pointer_alignment = ">" * move_right if move_right > 0 else ""
 
+    y_increment_setup = ">" + "+" * args.initial_y + "<"
+
     # initial part of logic for "print every character until new line
     detect_newline_logic = ",[----------[[++++++++++.[-]],----------]"
 
@@ -74,6 +76,7 @@ def main():
     sections = [
         header_code,
         pointer_alignment,
+        y_increment_setup,
         detect_newline_logic,
         newline_prefix_1,
         y_increment_logic,
