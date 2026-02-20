@@ -4,7 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+brainfuck = "0.2.1"
 
 [[bin]]
 name = "square_uncolor"
 path = "src/square_uncolor/main.rs"
+
+[[bin]]
+name = "quine_gen"
+path = "src/quine_gen/main.rs"

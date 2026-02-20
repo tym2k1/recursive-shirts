@@ -34,4 +34,5 @@ gcc bf.c -o bf
 # Acknowledgement
 
 - [_Print value of cell x as number for ANY sized cell_ from esolangs.org](https://esolangs.org/wiki/Brainfuck_algorithms#Print_value_of_cell_x_as_number_for_ANY_sized_cell_\(eg_8bit,_100000bit_etc)
-- [string_to_brainfuck.py](./scripts/string_to_brainfuck.py) strongly based and inspired on [GorkyR/brainfuck-text-generator](https://github.com/GorkyR/brainfuck-text-generator/tree/master)
+- [string_to_brainfuck.py](./scripts/string_to_brainfuck.py) based and inspired [GorkyR/brainfuck-text-generator](https://github.com/GorkyR/brainfuck-text-generator/tree/master)
+- [rust/quine_gen](./rust/src/quine_gen/) based and inspired by [oxalica/brainfuck_quine_gen.rs](https://gist.github.com/oxalica/84dd3b60e50b6beef5371ed2767f50b0)
