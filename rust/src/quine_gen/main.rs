@@ -34,11 +34,10 @@ fn build_decoder_logic() -> String {
     let decoder_template = "
         [<]
         <+7[>+9<-]>
-        ++++++++++++++++++++++++++++.
-        ----------------------------------------------.
-        ++++++++++++++++++++++++++++++++++++++++++++++++.
-        -------------------------------.
-        ..
+        +28.
+        -46.
+        +48.
+        -31...
         >[
             <.-19>
             [-<.<+>>]
@@ -47,7 +46,7 @@ fn build_decoder_logic() -> String {
         ]
         <<<[<]
         >[
-            -[-[-[-[-[-[-<+2>]<+29>]<+2>]<+14>]<+1>]<+2>]<<+5[>+9<-]>--
+            -[-[-[-[-[-[-[-[-[-<-22>]<-32>]<-29>]<+2>]<+29>]<+2>]<+14>]<+1>]<+2>]<<+5[>+9<-]>--
             .[-]>>
         ]
     ";
@@ -87,7 +86,7 @@ fn encode_with_table(source: &str, table: &[u8]) -> String {
         let idx = table
             .iter()
             .position(|&b| b == ch as u8)
-            .expect("Non-BF character in payload");
+            .expect("Detected a character not present in TABLE");
 
         encoded.push('>');
         encoded.push_str(&"+".repeat(idx + 1));
@@ -98,7 +97,12 @@ fn encode_with_table(source: &str, table: &[u8]) -> String {
 
 // quine generator (SVG-aware)
 fn gen_quine() -> String {
-    const TABLE: &[u8] = b"+-.<>[]";
+    const TABLE: &[u8] = &[
+        b'+', b'-', b'.', b'<', b'>', b'[', b']',
+        b'@',
+        b' ',  // space
+        b'\n', // LF
+    ];
 
     let pointer_bootstrap = "[-]>>>";
     let decoder_base = 3;
