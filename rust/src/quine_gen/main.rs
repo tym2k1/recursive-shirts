@@ -95,92 +95,71 @@ fn encode_with_table(source: &str, table: &[u8]) -> String {
 fn gen_quine() -> String {
     const TABLE: &[u8] = b"+-.<>[]";
 
-    // 1️⃣ bootstrap pointer to cell 3
     let pointer_bootstrap = ">>>";
-
     let decoder_base = 3;
 
-    // 2️⃣ SVG open/close (no newlines)
+    // SVG header (strip newlines once)
     let svg_open_tag = SVG_PREFIX.replace('\n', "");
     let svg_close_tag = SVG_SUFFIX.replace('\n', "");
-    let full_svg = format!("{}{}", svg_open_tag, svg_close_tag);
+    let full_svg = format!("{svg_open_tag}{svg_close_tag}");
 
-    // 3️⃣ Optimize full SVG printer
-    let (optimized_svg_printer, _, _, cells, _final_ptr, seq) =
+    // Optimize printer
+    let (optimized_svg_printer, _, _, _cells, _final_ptr, seq) =
         autotune(&full_svg);
 
-    // 4️⃣ Split at open tag boundary
+    // Split printer
     let (optimized_svg_prefix, optimized_svg_suffix) =
         split_printer_at(&optimized_svg_printer, svg_open_tag.len());
 
     let prefix_ptr = seq[svg_open_tag.len() - 1];
 
-    // POINTER MATH
-    let shift_for_prefix = 1;
-
-    let prefix_start = decoder_base + shift_for_prefix;
-
+    // Pointer math
+    let prefix_start = decoder_base + 1;
     let prefix_end = prefix_start + prefix_ptr;
 
-    // How far to go back after prefix?
     let back_to_decoder = prefix_end - decoder_base;
-
-    // How far to return later?
     let forward_to_prefix_end = prefix_end - decoder_base;
 
-    // ─────────────────────────────────────
-    // Build decoder logic
-    // ─────────────────────────────────────
     let decoder_logic = build_decoder_logic();
 
-    // Build encoded payload
-    let payload_source = format!(
-        "{}{}{}",
-        optimized_svg_prefix,
-        decoder_logic,
-        optimized_svg_suffix
-    );
+    // Layout builder
+    let build_body = |payload: &str| -> String {
+        let mut s = String::new();
 
+        // Encoded payload (or placeholder)
+        s.push_str(payload);
+
+        // Prefix print
+        s.push('>');
+        s.push_str(&optimized_svg_prefix);
+
+        // Return to decoder
+        s.push_str(&"<".repeat(back_to_decoder));
+        s.push('<');
+
+        // Decoder
+        s.push_str(&decoder_logic);
+
+        // Move back to prefix end
+        s.push_str(">>");
+        s.push_str(&">".repeat(forward_to_prefix_end));
+
+        // Suffix print
+        s.push_str(&optimized_svg_suffix);
+
+        s
+    };
+
+    // build payload source using same structure
+    let payload_source = build_body("");
+
+    // Encode it
     let encoded_payload = encode_with_table(&payload_source, TABLE);
 
-    // Final layout
+    // Final program = bootstrap + real body
     let mut program = String::new();
-
-    // Bootstrap to cell 3
     program.push_str(pointer_bootstrap);
-    //program.push_str("\n");
-
-    // Encode payload
-    program.push_str(&encoded_payload);
-    //program.push_str("\n");
-
-    // Move one right for SVG prefix printing
-    program.push('>');
-
-    // Print SVG prefix
-    program.push_str(&optimized_svg_prefix);
-    //program.push_str("\n");
-
-    // Return to decoder base
-    program.push_str(&"<".repeat(back_to_decoder));
-
-    // Move one left more to return to pre-print position
-    program.push('<');
-
-    // Run decoder
-    program.push_str(&decoder_logic);
-
-    // Move one right for SVG prefix printing
-    program.push('>');
-
-    // Move one right decoder ending on -1 index
-    program.push('>');
-
-    // Go back to end-of-prefix pointer
-    program.push_str(&">".repeat(forward_to_prefix_end));
-
-    // Print SVG suffix
-    program.push_str(&optimized_svg_suffix);
+    program.push_str(&build_body(&encoded_payload));
 
     program
 }
