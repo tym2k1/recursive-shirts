@@ -33,7 +33,12 @@ fn split_printer_at(code: &str, count: usize) -> (String, String) {
 fn build_decoder_logic() -> String {
     let decoder_template = "
         [<]
-        <+7[>+9<-]>-...
+        <+7[>+9<-]>
+        ++++++++++++++++++++++++++++.
+        ----------------------------------------------.
+        ++++++++++++++++++++++++++++++++++++++++++++++++.
+        -------------------------------.
+        ..
         >[
             <.-19>
             [-<.<+>>]
@@ -95,7 +100,7 @@ fn encode_with_table(source: &str, table: &[u8]) -> String {
 fn gen_quine() -> String {
     const TABLE: &[u8] = b"+-.<>[]";
 
-    let pointer_bootstrap = ">>>";
+    let pointer_bootstrap = "[-]>>>";
     let decoder_base = 3;
 
     // SVG header (strip newlines once)
@@ -146,6 +151,9 @@ fn gen_quine() -> String {
 
         // Suffix print
         s.push_str(&optimized_svg_suffix);
+
+        // This makes also the final svg a quine
+        s.push_str("[-]");
 
         s
     };
